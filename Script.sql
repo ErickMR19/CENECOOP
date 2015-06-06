@@ -80,16 +80,16 @@ CREATE TABLE administradores
 CREATE TABLE plandeestudios
 (
 	id		int(11) 	PRIMARY KEY AUTO_INCREMENT,
-	nombre_plan	VARCHAR (15)	NOT NULL
+	nombre_plan	VARCHAR (25)	NOT NULL
 
 );
 
 CREATE TABLE cursos
 (
 	id		 	VARCHAR(10)		PRIMARY KEY,
-	nombre_cur	VARCHAR(20)		NOT NULL,		
-	modulo		TINYINT(1)		NOT NULL,
-	bloque		TINYINT(1)		NOT NULL,
+	nombre_cur	VARCHAR(30)		NOT NULL,		
+	modulo		TINYINT(2)		NOT NULL,
+	bloque		TINYINT(2)		NOT NULL,
 	cod_plan	int (11)	NOT NULL,
 		FOREIGN KEY (cod_plan) REFERENCES plandeestudios(id)
 
