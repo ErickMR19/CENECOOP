@@ -1,0 +1,7 @@
+CURSOS
+nombre_cur varchar(30)
+modulo tinyint(2)
+bloque tinyint(2)
+
+PLANDEESTUDIOS
+nombre_plan varchar(25)
