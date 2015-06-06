@@ -60,14 +60,21 @@ class PlandeestudiosController extends AppController {
         throw new MethodNotAllowedException();
     }
 
-    if ($this->Plandeestudio->delete($id)) {
-        $this->Session->setFlash(
-            __('El plan con ID: %s se ha eliminado.', h($id))
-        );
-    } else {
-        $this->Session->setFlash(
-            __('El plan con ID: %s no pudo ser eliminado.', h($id))
-        );
+    try{
+        if ($this->Plandeestudio->delete($id)) {
+            $this->Session->setFlash(
+                __('El plan con ID: %s se ha eliminado.', h($id))
+            );
+        } else {
+            $this->Session->setFlash(
+                __('El plan con ID: %s no pudo ser eliminado.', h($id))
+            );
+        }
+    }
+    catch (Exception $e) {
+    $this->Session->setFlash(
+                __('El plan con ID: %s tiene asociado cursos, imposible eliminarlo.', h($id))
+            );
     }
 
     return $this->redirect(array('action' => 'index'));

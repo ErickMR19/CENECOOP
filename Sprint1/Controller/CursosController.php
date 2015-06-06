@@ -71,15 +71,21 @@ class CursosController extends AppController {
     if ($this->request->is('get')) {
         throw new MethodNotAllowedException();
     }
-
-    if ($this->Curso->delete($id)) {
-        $this->Session->setFlash(
-            __('El curso con ID: %s se ha eliminado.', h($id))
-        );
-    } else {
-        $this->Session->setFlash(
-            __('El curso con ID: %s no pudo ser eliminado.', h($id))
-        );
+    try{
+        if ($this->Curso->delete($id)) {
+            $this->Session->setFlash(
+                __('El curso con ID: %s se ha eliminado.', h($id))
+            );
+        } else {
+            $this->Session->setFlash(
+                __('El curso con ID: %s no pudo ser eliminado.', h($id))
+            );
+        }
+    }
+    catch (Exception $e) {
+    $this->Session->setFlash(
+                __('El curso con ID: %s tiene asociado algún requisito, imposible eliminarlo.', h($id))
+            );
     }
 
     return $this->redirect(array('action' => 'index'));
