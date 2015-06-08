@@ -22,7 +22,8 @@ CREATE TABLE users
 (
 	username 		VARCHAR(30) 	PRIMARY KEY,
 	cedula 		VARCHAR(15)			NOT NULL,
-	password	VARCHAR(255)		NOT NULL,	
+	password	VARCHAR(255)		NOT NULL,
+	tokenhash	VARCHAR(255)		NOT NULL,
 		FOREIGN KEY (cedula) REFERENCES personas(id)		
 );
 
@@ -33,10 +34,10 @@ CREATE TABLE estudiantes
 (
 	
 	id		 		VARCHAR(15)		PRIMARY KEY,	
-	nivel_academico	VARCHAR(15)		NOT NULL,
-	provincia		NUMERIC			NOT NULL,
-	canton			NUMERIC			NOT NULL,
-	region			NUMERIC			NOT NULL,
+	nivel_academico	VARCHAR(25)		NOT NULL,
+	provincia		VARCHAR(20)			NOT NULL,
+	canton			VARCHAR(20)			NOT NULL,
+	region			VARCHAR(20)			NOT NULL,
 	ocupacion		VARCHAR(15) 	NOT NULL, 	
 		FOREIGN KEY (id) REFERENCES personas(id)
 );
@@ -87,7 +88,7 @@ CREATE TABLE plandeestudios
 CREATE TABLE cursos
 (
 	id		 	VARCHAR(10)		PRIMARY KEY,
-	nombre_cur	VARCHAR(30)		NOT NULL,		
+	nombre_cur	VARCHAR(35)		NOT NULL,		
 	modulo		TINYINT(2)		NOT NULL,
 	bloque		TINYINT(2)		NOT NULL,
 	cod_plan	int (11)	NOT NULL,
