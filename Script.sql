@@ -44,7 +44,7 @@ CREATE TABLE estudiantes
 
 CREATE TABLE cooperativas 
 (
-	id			 	NUMERIC PRIMARY KEY,
+	id			 	INT PRIMARY KEY AUTO_INCREMENT,
 	nombre_coop		VARCHAR(20) NOT NULL,
 	correo_coop		VARCHAR(20),
 	telefono_coop	NUMERIC
@@ -54,7 +54,7 @@ CREATE TABLE cooperativistas
 (
 	id 				int(11) 		PRIMARY KEY AUTO_INCREMENT,
 	cedula_coop 	VARCHAR(15)		NOT NULL,	
-	cod_cooperativa	NUMERIC			NOT NULL,
+	cod_cooperativa	INT			NOT NULL,
 	cargo_coop		VARCHAR(15) 	NOT NULL, 	
 	sector_coop		VARCHAR(15)		NOT NULL,
 		FOREIGN KEY (cedula_coop) REFERENCES personas(id),
