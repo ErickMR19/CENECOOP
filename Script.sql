@@ -1,8 +1,78 @@
+/*
+ ** SOBREESCRIBIR EN APP/CONFIG/DATABASE.PHP LA CONFIGURACION QUE TENGAN CON LOS SIGUIENTES DATOS
+ ** PUEDEN CORRER TODO EL SCRIPT SEGUIDO
+ **
+ 
+ class DATABASE_CONFIG {
+
+	public $default = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'localhost',
+		'login' => 'cenecoop',
+		'password' => 'cenecoop',
+		'database' => 'cenecoop',
+		'prefix' => '',
+		//'encoding' => 'utf8',
+	);
+
+	public $test = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'localhost',
+		'login' => 'user',
+		'password' => 'password',
+		'database' => 'test_database_name',
+		'prefix' => '',
+		//'encoding' => 'utf8',
+	);
+}
+ **
+  */
+
+
+
+-- --------------- ELIMINA EL USUARIO CENECOOP SI EXISTE -------------------
+
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ANSI';
+USE mysql ;
+DROP PROCEDURE IF EXISTS mysql.drop_user_if_exists ;
+DELIMITER $$
+CREATE PROCEDURE mysql.drop_user_if_exists()
+BEGIN
+  DECLARE foo BIGINT DEFAULT 0 ;
+  SELECT COUNT(*)
+  INTO foo
+    FROM mysql.user
+      WHERE User = 'cenecoop' and  Host = 'localhost';
+   IF foo > 0 THEN
+         DROP USER 'cenecoop'@'localhost' ;
+  END IF;
+END ;$$
+DELIMITER ;
+CALL mysql.drop_user_if_exists() ;
+DROP PROCEDURE IF EXISTS mysql.drop_users_if_exists ;
+SET SQL_MODE=@OLD_SQL_MODE ;
+
+-- -----------------------------------------------------------------------
+
+-- ------------ ELIMINA LA BASE DE DATOS CENECOOP SI EXISTE ---------------
+DROP SCHEMA IF EXISTS cenecoop;
+-- -----------------------------------------------------------------------
+
+-- ------------------ CREA LA BASE DE DATOS CENECOOP ----------------------
 CREATE SCHEMA Cenecoop DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+-- ------------------------------------------------------------------------
 
 
+-- --------- CREA EL USUARIO CENECOOP Y LE DA PERMISOS EN LA BASE -----------
+CREATE USER 'cenecoop'@'localhost' IDENTIFIED BY 'cenecoop';
 
+GRANT ALL ON Cenecoop.* TO 'cenecoop'@'localhost';
+-- ---------------------------------------------------------------------------
 
+-- --------------- CREA TODAS LAS TABLAS EN LA BASE DE DATOS -----------------
+USE Cenecoop;
 
 CREATE TABLE personas 
 (
@@ -14,21 +84,19 @@ CREATE TABLE personas
 	telefono		NUMERIC,
 	nacionalidad	VARCHAR (20)	NOT NULL,
 	fecha_nacimiento	DATE			NOT NULL,	
-	genero			CHAR			NOT NULL,
-	rol				VARCHAR(15)		NOT NULL
+	genero			CHAR			NOT NULL
 );
+
 
 CREATE TABLE users 
 (
-	username 		VARCHAR(30) 	PRIMARY KEY,
-	cedula 		VARCHAR(15)			NOT NULL,
-	password	VARCHAR(255)		NOT NULL,
-	tokenhash	VARCHAR(255)		NOT NULL,
+	username 		VARCHAR(40) 	PRIMARY KEY	,
+	password		VARCHAR(255)	NOT NULL	,
+	cedula	 		VARCHAR(15)		NOT NULL	,
+	tokenhash		VARCHAR(255)	NOT NULL	,
+	rol				VARCHAR(15)		NOT NULL	,
 		FOREIGN KEY (cedula) REFERENCES personas(id)		
 );
-
-
-	
 
 CREATE TABLE estudiantes 
 (
@@ -57,7 +125,7 @@ CREATE TABLE cooperativistas
 	cod_cooperativa	INT			NOT NULL,
 	cargo_coop		VARCHAR(15) 	NOT NULL, 	
 	sector_coop		VARCHAR(15)		NOT NULL,
-		FOREIGN KEY (cedula_coop) REFERENCES personas(id),
+		FOREIGN KEY (cedula_coop) REFERENCES estudiantes(id),
 
 		FOREIGN KEY (cod_cooperativa) REFERENCES cooperativas(id)
 );
@@ -176,3 +244,6 @@ CREATE TABLE imparte
 		FOREIGN KEY (cod_curso) 		REFERENCES 	cursos(id),
 		FOREIGN KEY	(cedula_prof) 	REFERENCES	profesores(id)
 );
+
+COMMIT;
+-- ----------------------------------------------------------------
