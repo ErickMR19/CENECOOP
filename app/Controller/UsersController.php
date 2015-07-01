@@ -10,7 +10,8 @@ class UsersController extends AppController {
 
 
 	function reset($token=null){
-		//$this->layout="Login";
+		$this->requieredNotLogin();
+		$this->layout="standalone";
 		$this->User->recursive=-1;
 		if(!empty($token)){
 			$u=$this->User->findBytokenhash($token);
@@ -192,7 +193,7 @@ function forgetpw(){
 	public function beforeFilter() {
 		parent::beforeFilter();
 		// Allow users to register and logout.
-		$this->Auth->allow('login','forgetpw','resetpw');
+		$this->Auth->allow('login','forgetpw','reset');
 	}
 
 	public function login() {

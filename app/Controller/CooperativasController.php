@@ -26,7 +26,7 @@ class CooperativasController extends AppController {
 
 
 	public function add() {
-		$this->requieredNotLogin();
+		$this->requieredAdmin();
         if ($this->request->is('post')) {
             $this->Cooperativa->create();
             if ($this->Cooperativa->save($this->request->data)) {
@@ -47,7 +47,7 @@ class CooperativasController extends AppController {
     }*/
 
 	public function importar() {
-		$this->requieredNotLogin();
+		$this->requieredAdmin();
 		$filename_temp = $this->request->data['Cooperativa']['Filename']['tmp_name'];
 		$filename = $this->request->data['Cooperativa']['Filename']['name'];
 		$filePath = TMP . 'uploads' . DS . 'Cooperativa' . DS . $filename;
