@@ -131,8 +131,6 @@ CREATE TABLE cooperativistas
 );
 
 
-
-
 CREATE TABLE profesores 
 (
 	id	 	VARCHAR(15) 	PRIMARY KEY,
@@ -164,15 +162,15 @@ CREATE TABLE cursos
 
 );
 
-
-
 CREATE TABLE periodos
 (
-	id			VARCHAR(10)	PRIMARY KEY,
-	anyo 		YEAR(4)		NOT NULL,
-	trimestre	TINYINT(1)	NOT NULL,
-	inicio		DATE		NOT NULL,
-	fin			DATE		NOT NUll
+	id						VARCHAR(10)	PRIMARY KEY,
+	anyo 					YEAR(4)		NOT NULL,
+	trimestre				TINYINT(1)	NOT NULL,
+	inicio					DATE		NOT NULL,
+	fin						DATE		NOT NUll,
+	inicio_matricula		DATE		NOT NULL,
+	fin_matricula			DATE		NOT NUll
 );
 
 CREATE TABLE grupos
@@ -219,49 +217,6 @@ CREATE TABLE matricula_temp
 		FOREIGN KEY (cod_curso) REFERENCES 	cursos (id)
 );
 
-/*TRIGGER UPDATE BEFORE en MatriculaTemps*/
-CREATE TRIGGER `MatriculaTemp` BEFORE INSERT ON `matricula_temp` FOR EACH ROW BEGIN
-
-SET @cpt := (SELECT COUNT(*) FROM `cooperativistas` WHERE NEW.cedula_est = cedula_coop);
-
-IF @cpt > 0 THEN
-    SET NEW.cooperativista = 1;
-END IF;
-
-SET @reprobadas := (SELECT COUNT(*)
-	FROM MATRICULAS
-	WHERE NEW.cedula_est = cedula_est AND NEW.cod_curso = cod_curso AND nota_final<= 7.00);
-
-IF @reprobadas > 0 THEN
-    SET NEW.repitente = 1;
-END IF;
-
-SET NEW.fecha_matricula = SYSDATE();
-
-END
-
-
---Trigger en Matricula, after Uptdate
-
-BEGIN
-
-IF(NEW.nota_final >= 7.0) THEN
-SET NEW.estado = 'APROBADO';
-END IF;
-
-IF(NEW.nota_final < 7.0) THEN
-SET NEW.estado = 'REPROBADO';
-END IF;
-
-
-END
-
-
--- Se agrega expendiente academico
--- Descarga del CSV
-
-
-
 CREATE TABLE requisitoscursos
 (
 	id 			int(11) 	PRIMARY KEY AUTO_INCREMENT,
@@ -281,9 +236,6 @@ CREATE TABLE calificaciones
 		
 
 );
-
-
-
 
 
 CREATE TABLE imparte
