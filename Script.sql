@@ -223,8 +223,8 @@ CREATE TABLE requisitoscursos
 	id 			int(11) 	PRIMARY KEY AUTO_INCREMENT,
 	cod_curso	VARCHAR(10) 	NOT NULL,
 	requisito 	VARCHAR(10)		NOT NULL, 
-		FOREIGN KEY (cod_curso) REFERENCES CURSOS (id),
-		FOREIGN KEY (requisito) REFERENCES CURSOS (id)
+		FOREIGN KEY (cod_curso) REFERENCES cursos (id),
+		FOREIGN KEY (requisito) REFERENCES cursos (id)
 );
 
 CREATE TABLE calificaciones
