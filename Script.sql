@@ -211,6 +211,7 @@ CREATE TABLE matricula_temp
 	cedula_est		VARCHAR(15) 	NOT NULL,
 	cooperativista  TINYINT(1) default 0,
 	cod_curso		varchar(10) NOT NULL,
+	cod_grupo		int(11),
 	fecha_matricula	TIMESTAMP		NOT NULL,
 	repitente		TINYINT(1) default 0,
 		FOREIGN KEY (cedula_est) REFERENCES 	estudiantes (id),
@@ -231,7 +232,7 @@ CREATE TABLE calificaciones
 	id 			int(11) 	PRIMARY KEY AUTO_INCREMENT,
 	id_matriculas int(11) NOT NULL,
 	nota		DECIMAL(3,2)			NOT NULL,		
-	semana		TINYINT(1) 	NOT NULL,		
+	semana		INT(1) 	NOT NULL,		
 		FOREIGN KEY (id_matriculas) 	REFERENCES  matriculas(id)
 		
 
