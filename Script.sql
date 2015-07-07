@@ -164,7 +164,7 @@ CREATE TABLE cursos
 
 CREATE TABLE periodos
 (
-	id						VARCHAR(10)	PRIMARY KEY,
+	id					int(11) 	PRIMARY KEY AUTO_INCREMENT,
 	anyo 					YEAR(4)		NOT NULL,
 	trimestre				TINYINT(1)	NOT NULL,
 	inicio					DATE		NOT NULL,
@@ -175,12 +175,12 @@ CREATE TABLE periodos
 
 CREATE TABLE grupos
 (
-	id		 		VARCHAR(8) 	PRIMARY KEY,
+	id		 	int(11) 	PRIMARY KEY AUTO_INCREMENT,
 	NumGrupo		Numeric		NOT NULL,
 	Cupo			NUMERIC		NOT NULL,
-	NumEstudiantes	NUMERIC		NOT NULL,
+	NumEstudiantes		NUMERIC		NOT NULL,
 	Horario			VARCHAR(15)	NOT NULL,
-	CodPeriodo		VARCHAR(10)	NOT NULL,
+	CodPeriodo		int(11) 	NOT NULL,
 	CodCurso		VARCHAR(10)	NOT NULL,
 	Cedulaprof		VARCHAR(15)		NOT NULL,
 		FOREIGN KEY (CodPeriodo)REFERENCES periodos(id),
@@ -193,7 +193,7 @@ CREATE TABLE matriculas
 (
 	id 				int(11) 	PRIMARY KEY AUTO_INCREMENT,
 	cedula_est		VARCHAR(15) 	NOT NULL,
-	cod_grupo		VARCHAR(8)	NOT NULL,
+	cod_grupo		int(11) 	NOT NULL,
 	cod_curso		VARCHAR(10)	NOT NULL,
 	estado			VARCHAR(16) default 'MATRICULADO',
 	fecha_matricula	DATE		NOT NULL,
